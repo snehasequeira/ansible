@@ -1,0 +1,33 @@
+- hosts: client1
+  tasks:
+    - name: update my ubuntu system
+      apt: update_cache=yes
+    
+    - name: install jdk
+      apt: name=default-jdk state=latest
+    - name: adding group and user for tomcat
+      group:
+        name: tomcat
+        state: present
+    - name: add a user
+      user:
+        name: tomcat
+        comment: John Doe
+        uid: 1040
+        group: tomcat
+    - name: install a package curl
+      apt: name=curl state=latest
+    - name: Download the apache tomcat tar file
+      get_url:
+        url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.62/bin/apache-tomcat-9.0.62.tar.gz
+        dest: /tmp 
+    - name: create an apache tomcat directory
+      file:
+        path: /opt/tomcat
+        state: directory
+        owner: tomcat 
+        group: tomcat
+    - name: 
+      unarchive:
+        src: /tmp/apache-tomcat-9.0.62.tar.gz
+        dest: /opt/tomcat
